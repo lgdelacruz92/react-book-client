@@ -1,0 +1,7 @@
+
+.ProseMirror {
+    padding: 1rem;
+}
+.ProseMirror-focused {
+    outline: none;
+  }
