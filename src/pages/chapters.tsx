@@ -5,50 +5,51 @@ import "highlight.js/styles/monokai.css";
 import Sidebar from "./components/sidebar";
 import { useEffect, useState } from "react";
 import MarkDown from "./components/mark-down";
+import { chapters } from "./mock-api/chapter-slugs";
+import { SectionType } from "@/types/section-type";
 
-const fetchChapterSlugs = async (): Promise<ChapterSlugType[]> => {
-  const response = await fetch(`${process.env.API_URL}/chapters`);
-  const chapterSlugs: ChapterSlugType[] = await response.json();
-  return chapterSlugs;
+const fetchChaptersStructure = async (): Promise<ChapterType[]> => {
+  // const response = await fetch(`${process.env.API_URL}/chapters`);
+  // const chapterSlugs: ChapterSlugType[] = await response.json();
+  return chapters;
 };
 
-const fetchChapter = async (chapterSlug: string): Promise<ChapterType> => {
+const fetchSection = async (chapterSlug: string): Promise<SectionType> => {
   const response = await fetch(
     `${process.env.API_URL}/chapters/${chapterSlug}`
   );
-  const newPosts: ChapterType = await response.json();
+  const newPosts: SectionType = await response.json();
   return newPosts;
 };
 
 const Chapters = () => {
-  const [currentChapter, setChapter] = useState<ChapterType>({
-    title: "",
-    content: "",
-    fileName: "",
-  });
+  const [currentSection, setCurrentSection] = useState<SectionType>();
+  const [chaptersStructure, setChaptersStructure] = useState<ChapterType[]>([]);
 
-  const [chapterSlug, setChapterSlug] = useState<string>("");
-  const [links, setLinks] = useState<ChapterSlugType[]>([]);
-
-  const handleSideBarClick = (fileName: string) => {
-    setChapterSlug(fileName);
+  const handleSideBarClick = (section: SectionType) => {
+    setCurrentSection(section);
   };
 
   useEffect(() => {
-    fetchChapter(chapterSlug)
+    if (chaptersStructure.length === 0) {
+      return;
+    }
+
+    if (chaptersStructure[0].sections.length === 0) {
+      return;
+    }
+
+    fetchSection(chaptersStructure[0].sections[0].fileName)
       .then((response) => {
-        setChapter(response);
+        setCurrentSection(response);
       })
       .catch((err) => console.error(err));
-  }, [chapterSlug]);
+  }, [chaptersStructure]);
 
   useEffect(() => {
-    fetchChapterSlugs()
-      .then((chapterSlugs) => {
-        if (chapterSlugs.length > 0) {
-          setChapterSlug(chapterSlugs[0].fileName);
-        }
-        setLinks(chapterSlugs);
+    fetchChaptersStructure()
+      .then((chaptersStructure) => {
+        setChaptersStructure(chaptersStructure);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -58,13 +59,13 @@ const Chapters = () => {
         <Flex>
           <Stack>
             <Sidebar
-              activeLink={chapterSlug}
-              links={links}
+              activeSectionFileName={currentSection?.fileName || ""}
+              chapterStructure={chaptersStructure}
               onChapterClick={handleSideBarClick}
             />
           </Stack>
           <Box p="1rem">
-            <MarkDown content={currentChapter.content || ""}></MarkDown>
+            <MarkDown content={currentSection?.content || ""}></MarkDown>
           </Box>
         </Flex>
       </Box>

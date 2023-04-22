@@ -1,7 +1,7 @@
-import { SectionTypeSlug } from "./section-type-slug";
+import { SectionType } from "./section-type";
 
 export interface ChapterType {
     chapter: number;
-    sections: SectionTypeSlug[];
+    sections: SectionType[];
     title: string;
 }

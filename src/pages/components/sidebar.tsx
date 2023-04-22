@@ -1,33 +1,46 @@
-import type { ChapterSlugType } from "@/types/chapter-slug-type";
-import { Box, Heading, List, ListItem, ListIcon } from "@chakra-ui/react";
+import { Box, Heading, List, ListItem, ListIcon, Text } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import { ChapterType } from "@/types/chapter-type";
+import { SectionType } from "@/types/section-type";
 
 interface SideBarProps {
-  links: ChapterSlugType[];
-  onChapterClick: (chapter: string) => void;
-  activeLink: string;
+  chapterStructure: ChapterType[];
+  onChapterClick: (section: SectionType) => void;
+  activeSectionFileName: string;
 }
 const SideBar: React.FC<SideBarProps> = ({
-  links,
+  chapterStructure,
   onChapterClick,
-  activeLink,
+  activeSectionFileName,
 }) => {
   return (
     <Box minW="15rem" p="1rem">
       <Heading as="h2">Chapters</Heading>
       <nav>
         <List>
-          {links.map((link, i) => {
+          {chapterStructure.map((chapterItem, i) => {
             return (
-              <ListItem
-                key={`link-${i}`}
-                onClick={() => onChapterClick(link.fileName)}
-                id={`${link.fileName}`}
-                mt="0.5rem"
-                color={activeLink === link.fileName ? "green.500" : "current"}
-              >
-                <ListIcon as={ChevronRightIcon} color="green.500" />
-                {`${link.title}`}
+              <ListItem key={`link-${i}`} mt="0.5rem">
+                <Text fontWeight="bold">{`${chapterItem.title}`}</Text>
+                <List>
+                  {chapterItem.sections.map((section, j) => {
+                    return (
+                      <ListItem
+                        onClick={() => onChapterClick(section)}
+                        p=".5rem"
+                        key={`section-${j}`}
+                        color={
+                          section.fileName === activeSectionFileName
+                            ? "green.500"
+                            : "current"
+                        }
+                      >
+                        <ListIcon as={ChevronRightIcon} color="green.500" />
+                        {`${section.title}`}
+                      </ListItem>
+                    );
+                  })}
+                </List>
               </ListItem>
             );
           })}
