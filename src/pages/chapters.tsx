@@ -64,7 +64,7 @@ const Chapters = () => {
               onChapterClick={handleSideBarClick}
             />
           </Stack>
-          <Box p="1rem">
+          <Box p="1rem" maxH="100vh" overflowX="inherit" overflowY="scroll">
             <MarkDown content={currentSection?.content || ""}></MarkDown>
           </Box>
         </Flex>
