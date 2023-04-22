@@ -1,4 +1,4 @@
-import { IconButton, Link } from "@chakra-ui/react";
+import { Link, Stack, Text, WrapItem, useColorMode } from "@chakra-ui/react";
 
 interface BookProps {
   label: string;
@@ -6,12 +6,23 @@ interface BookProps {
 }
 
 const Book: React.FC<BookProps> = ({ icon, label }) => {
+  const { colorMode } = useColorMode();
   return (
-    <div>
-      <Link>
-        <IconButton aria-label={label} icon={icon} />
+    <WrapItem
+      _hover={{
+        bg: colorMode === "dark" ? "gray.600" : "gray.100",
+        fontWeight: "bold",
+      }}
+      borderRadius="10px"
+      p="1rem"
+    >
+      <Link href="/chapters">
+        <Stack alignItems="center" spacing={5}>
+          {icon}
+          <Text>{label}</Text>
+        </Stack>
       </Link>
-    </div>
+    </WrapItem>
   );
 };
 

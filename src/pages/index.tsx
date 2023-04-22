@@ -1,19 +1,19 @@
-import {
-  Image,
-  IconButton,
-  Link,
-  Switch,
-  useColorMode,
-  Stack,
-} from "@chakra-ui/react";
+import { Switch, useColorMode, Stack } from "@chakra-ui/react";
 import Book from "./components/book";
+import BookGallery from "./components/book-gallery";
+import BookLogo from "./components/book-logo";
 
 function IndexPage() {
   const { toggleColorMode } = useColorMode();
   return (
     <Stack m="1rem">
       <Switch onChange={toggleColorMode}>Dark mode</Switch>
-      <Book label="react-book" icon={<Image src="/favicon.ico"></Image>}></Book>
+      <BookGallery>
+        <Book
+          label="Introduction To React"
+          icon={<BookLogo src="/favicon.ico"></BookLogo>}
+        ></Book>
+      </BookGallery>
     </Stack>
   );
 }
