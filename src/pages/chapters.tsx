@@ -1,23 +1,19 @@
 import { Box, Center, Flex, Stack } from "@chakra-ui/react";
 import type { ChapterType } from "@/types/chapter-type";
-import type { ChapterSlugType } from "@/types/chapter-slug-type";
 import "highlight.js/styles/monokai.css";
 import Sidebar from "./components/sidebar";
 import { useEffect, useState } from "react";
 import MarkDown from "./components/mark-down";
-import { chapters } from "./mock-api/chapter-slugs";
 import { SectionType } from "@/types/section-type";
 
 const fetchChaptersStructure = async (): Promise<ChapterType[]> => {
-  // const response = await fetch(`${process.env.API_URL}/chapters`);
-  // const chapterSlugs: ChapterSlugType[] = await response.json();
+  const response = await fetch(`${process.env.API_URL}/chapters`);
+  const chapters: ChapterType[] = await response.json();
   return chapters;
 };
 
-const fetchSection = async (chapterSlug: string): Promise<SectionType> => {
-  const response = await fetch(
-    `${process.env.API_URL}/chapters/${chapterSlug}`
-  );
+const fetchSection = async (fileName: string): Promise<SectionType> => {
+  const response = await fetch(`${process.env.API_URL}/chapters/${fileName}`);
   const newPosts: SectionType = await response.json();
   return newPosts;
 };
@@ -27,7 +23,11 @@ const Chapters = () => {
   const [chaptersStructure, setChaptersStructure] = useState<ChapterType[]>([]);
 
   const handleSideBarClick = (section: SectionType) => {
-    setCurrentSection(section);
+    fetchSection(section.fileName)
+      .then((response) => {
+        setCurrentSection(response);
+      })
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
