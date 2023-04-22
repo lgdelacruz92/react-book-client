@@ -1,5 +1,7 @@
+import { SectionTypeSlug } from "./section-type-slug";
+
 export interface ChapterType {
-    fileName: string;
-    content: string;
+    chapter: number;
+    sections: SectionTypeSlug[];
     title: string;
 }
