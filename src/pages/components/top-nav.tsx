@@ -12,7 +12,7 @@ const TopNav: React.FC<TopNavProps> = ({ isOpen, onOpen }) => {
 
   return (
     <nav>
-      <Box>
+      <Box p="1rem">
         <IconButton
           ref={btnRef}
           icon={<HamburgerIcon />}
