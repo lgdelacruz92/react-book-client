@@ -1,7 +1,5 @@
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -13,9 +11,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import TopNav from "./top-nav";
+import TopNav from "../top-nav";
+import { SideBarProps as SharedSideBarProps } from "@/types/props/sidebar.props";
+import SideBar from "./sidebar";
 
-function SidebarDrawer() {
+type SideBarMobileProps = SharedSideBarProps;
+
+const SideBarMobile: React.FC<SideBarMobileProps> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
 
@@ -33,7 +35,9 @@ function SidebarDrawer() {
           <DrawerCloseButton />
           <DrawerHeader>Chapters</DrawerHeader>
 
-          <DrawerBody></DrawerBody>
+          <DrawerBody>
+            <SideBar {...props} />
+          </DrawerBody>
 
           <DrawerFooter>
             <IconButton
@@ -46,6 +50,6 @@ function SidebarDrawer() {
       </Drawer>
     </>
   );
-}
+};
 
-export default SidebarDrawer;
+export default SideBarMobile;

@@ -1,14 +1,14 @@
 import { Box, Center, Flex } from "@chakra-ui/react";
-import type { ChapterType } from "@/types/chapter-type";
+import type { ChapterType } from "@/types/data-types/chapter-type";
 import "highlight.js/styles/monokai.css";
-import Sidebar from "./components/sidebar";
 import { useEffect, useState } from "react";
 import MarkDown from "./components/mark-down";
-import { SectionType } from "@/types/section-type";
+import { SectionType } from "@/types/data-types/section-type";
 import MobileView from "./components/mobile-view";
-import SidebarDrawer from "./components/sidebar-drawer";
 import DesktopView from "./components/desktop-view";
 import { useIsMobileView } from "@/hooks/use-is-mobile-view";
+import SideBarDesktop from "./components/sidebar/sidebar-desktop";
+import SideBarMobile from "./components/sidebar/sidebar-mobile";
 
 const fetchChaptersStructure = async (): Promise<ChapterType[]> => {
   const response = await fetch(`${process.env.API_URL}/chapters`);
@@ -62,11 +62,15 @@ const Chapters = () => {
     <Center>
       <Box w={isMobileView ? "100%" : "80%"}>
         <MobileView>
-          <SidebarDrawer></SidebarDrawer>
+          <SideBarMobile
+            activeSectionFileName={currentSection?.fileName || ""}
+            chapterStructure={chaptersStructure}
+            onChapterClick={handleSideBarClick}
+          />
         </MobileView>
         <Flex>
           <DesktopView>
-            <Sidebar
+            <SideBarDesktop
               activeSectionFileName={currentSection?.fileName || ""}
               chapterStructure={chaptersStructure}
               onChapterClick={handleSideBarClick}

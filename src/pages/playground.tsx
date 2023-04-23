@@ -1,12 +1,9 @@
 import { Box, Stack } from "@chakra-ui/react";
-import SidebarDrawer from "./components/sidebar-drawer";
 
 const Sidebar = () => {
   return (
     <Box>
-      <Stack spacing={4} p={4}>
-        <SidebarDrawer />
-      </Stack>
+      <Stack spacing={4} p={4}></Stack>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { ChapterType } from "@/types/chapter-type";
+import { ChapterType } from "@/types/data-types/chapter-type";
 
 export const chapters: ChapterType[] = [
     {
