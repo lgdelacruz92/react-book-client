@@ -51,6 +51,11 @@ body {
   font-weight: bold;
 }
 
+.markdown-it-output ul {
+  margin-left: 1rem;
+  list-style: upper-roman
+}
+
 .chapter-test h1 {
   font-size: xx-large;
   font-weight: bold;
