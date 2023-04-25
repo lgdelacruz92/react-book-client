@@ -3,9 +3,9 @@ import hljs from "highlight.js";
 import "highlight.js/styles/monokai.css";
 import { forwardRef, ForwardRefRenderFunction } from "react";
 import { ComponentWithAs } from "@chakra-ui/react";
+import { iFrameRenderPlugin } from "./plugins/iframe-render.plugin";
 
 const md = new MarkdownIt({
-  html: true,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -16,6 +16,7 @@ const md = new MarkdownIt({
     return ""; // use external default escaping
   },
 });
+md.use(iFrameRenderPlugin);
 
 interface MarkdownProps {
   content: string;

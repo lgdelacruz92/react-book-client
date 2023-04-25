@@ -2,7 +2,7 @@ import { Box, Center, Flex } from "@chakra-ui/react";
 import type { ChapterType } from "@/types/data-types/chapter-type";
 import "highlight.js/styles/monokai.css";
 import { useEffect, useState } from "react";
-import MarkDown from "./components/mark-down";
+import MarkDown from "./components/mark-down/mark-down";
 import { SectionType } from "@/types/data-types/section-type";
 import MobileView from "./components/mobile-view";
 import DesktopView from "./components/desktop-view";

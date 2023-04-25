@@ -1,6 +1,6 @@
 import { Box, Heading, Flex, Center, Button } from "@chakra-ui/react";
 import { useState, useRef, useEffect } from "react";
-import Markdown from "./components/mark-down";
+import Markdown from "./components/mark-down/mark-down";
 import { useClipboard } from "@chakra-ui/hooks";
 
 function MarkDownEditor() {
