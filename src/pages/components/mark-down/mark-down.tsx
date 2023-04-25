@@ -2,10 +2,10 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import "highlight.js/styles/monokai.css";
 import { forwardRef, ForwardRefRenderFunction } from "react";
-import { ComponentWithAs } from "@chakra-ui/react";
-import { iFrameRenderPlugin } from "./plugins/iframe-render.plugin";
+import { Box, ComponentWithAs } from "@chakra-ui/react";
 
 const md = new MarkdownIt({
+  html: true,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -16,7 +16,6 @@ const md = new MarkdownIt({
     return ""; // use external default escaping
   },
 });
-md.use(iFrameRenderPlugin);
 
 interface MarkdownProps {
   content: string;
@@ -29,11 +28,11 @@ const MarkdownBase: ForwardRefRenderFunction<HTMLDivElement, MarkdownProps> = (
   const html = md.render(content);
 
   return (
-    <div
+    <Box
       ref={ref}
       className="markdown-it-output"
       dangerouslySetInnerHTML={{ __html: html }}
-    ></div>
+    ></Box>
   );
 };
 
