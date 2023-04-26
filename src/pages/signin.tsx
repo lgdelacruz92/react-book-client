@@ -1,10 +1,11 @@
+import { Center } from "@chakra-ui/react";
 import GoogleSignInButton from "./components/google/google-signin-button";
 
 const SignIn = () => {
   return (
-    <div>
+    <Center height="100vh">
       <GoogleSignInButton redirect="playground" />
-    </div>
+    </Center>
   );
 };
 

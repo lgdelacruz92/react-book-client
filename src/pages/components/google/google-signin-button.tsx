@@ -2,6 +2,8 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { GoogleSignInButtonProps } from "./google.types";
 import { useRouter } from "next/router";
 import AppFirebase from "@/lib/firebase";
+import { Button } from "@chakra-ui/react";
+import GoogleIcon from "@/icons/google-icon";
 
 const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   redirect,
@@ -20,7 +22,11 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
     }
   };
 
-  return <button onClick={handleSignIn}>Sign in with Google</button>;
+  return (
+    <Button rightIcon={<GoogleIcon />} onClick={handleSignIn}>
+      Sign in with Google
+    </Button>
+  );
 };
 
 export default GoogleSignInButton;
