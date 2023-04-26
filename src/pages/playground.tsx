@@ -39,6 +39,8 @@ const useChatClient = ({ userId, userToken }: UseChatClientProps) => {
     chatClient,
   };
 };
+
+// TODO: get this from backend
 const userId = "lester";
 const userToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyIn0.vl4k9H646Deg5-mAWQevIz1Mr7gm22sp1CPymE_u_bQ";
