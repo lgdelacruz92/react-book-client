@@ -16,18 +16,17 @@ import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
 import "stream-chat-react/dist/css/v2/index.css";
 const apiKey = process.env.STREAMCHAT_API_KEY || "";
 
-const Sidebar = () => {
+interface UseChatClientProps {
+  userId: string;
+  userToken: string;
+}
+
+const useChatClient = ({ userId, userToken }: UseChatClientProps) => {
   const [chatClient, setChatClient] =
     useState<StreamChat<DefaultStreamChatGenerics>>();
-  const [chatChannel, setChatChannel] =
-    useState<StreamChatChannel<DefaultStreamChatGenerics>>();
 
   useEffect(() => {
     const initializeChat = async () => {
-      const userId = "lester";
-      const userToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyIn0.vl4k9H646Deg5-mAWQevIz1Mr7gm22sp1CPymE_u_bQ";
-
       const client = new StreamChat(apiKey);
       await client.connectUser({ id: userId }, userToken);
 
@@ -36,6 +35,18 @@ const Sidebar = () => {
 
     initializeChat();
   }, []);
+  return {
+    chatClient,
+  };
+};
+const userId = "lester";
+const userToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyIn0.vl4k9H646Deg5-mAWQevIz1Mr7gm22sp1CPymE_u_bQ";
+
+const Sidebar = () => {
+  const { chatClient } = useChatClient({ userId, userToken });
+  const [chatChannel, setChatChannel] =
+    useState<StreamChatChannel<DefaultStreamChatGenerics>>();
 
   useEffect(() => {
     const initializeChannel = async () => {
@@ -63,7 +74,7 @@ const Sidebar = () => {
   }
   return (
     <Box id="chat-channel-container">
-      <Chat client={chatClient} theme="messaging light">
+      <Chat client={chatClient} theme="messaging">
         <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>
             <ChannelHeader />
