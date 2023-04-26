@@ -1,13 +1,14 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { GoogleSignInButtonProps } from "./google.types";
 import { useRouter } from "next/router";
+import AppFirebase from "@/lib/firebase";
 
 const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   redirect,
 }) => {
   const router = useRouter();
   const handleSignIn = async () => {
-    const auth = getAuth();
+    const auth = AppFirebase.auth();
     const provider = new GoogleAuthProvider();
     provider.addScope("profile");
     provider.addScope("email");
