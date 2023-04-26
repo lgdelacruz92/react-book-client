@@ -21,7 +21,6 @@ const Sidebar = () => {
     useState<StreamChat<DefaultStreamChatGenerics>>();
   const [chatChannel, setChatChannel] =
     useState<StreamChatChannel<DefaultStreamChatGenerics>>();
-  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     const initializeChat = async () => {
@@ -55,21 +54,15 @@ const Sidebar = () => {
   }, [chatClient]);
 
   useEffect(() => {
-    if (chatChannel && chatContainerRef.current) {
-      const attachInput = (chatContainerRef.current as any).querySelector(
-        ".str-chat__file-input-container"
-      );
-      if (attachInput) {
-        attachInput.disabled = true;
-      }
+    if (chatChannel) {
     }
-  }, [chatChannel, chatContainerRef.current]);
+  }, [chatChannel]);
 
   if (!chatClient || !chatChannel) {
     return null;
   }
   return (
-    <Box ref={chatContainerRef} id="chat-channel-container">
+    <Box id="chat-channel-container">
       <Chat client={chatClient} theme="messaging light">
         <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>
