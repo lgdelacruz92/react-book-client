@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 import { StreamChat, Channel as StreamChatChannel } from "stream-chat";
 
 import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
-
-interface UseStreamChatChannelProps {
-  channel: string;
-  channelOptions: Record<string, string | string[]>;
-  client?: StreamChat<DefaultStreamChatGenerics>;
-}
+import { UseStreamChatChannelProps } from "./stream-chat.types";
 
 export const useStreamChatChannel = ({
   channel,
@@ -19,6 +14,9 @@ export const useStreamChatChannel = ({
     useState<StreamChatChannel<DefaultStreamChatGenerics>>();
 
   useEffect(() => {
+    if (!client || !channelOptions || !channel) {
+      return;
+    }
     const initializeChannel = async () => {
       if (client) {
         const connectedChannel = client.channel(
@@ -31,7 +29,7 @@ export const useStreamChatChannel = ({
       }
     };
     initializeChannel();
-  }, [client]);
+  }, [client, channelOptions, channel]);
 
   return { chatChannel };
 };

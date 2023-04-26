@@ -3,13 +3,9 @@ import { useEffect, useState } from "react";
 import { StreamChat } from "stream-chat";
 
 import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
+import { UseStreamChatClientProps } from "./stream-chat.types";
 
 const apiKey = process.env.STREAMCHAT_API_KEY || "";
-
-interface UseStreamChatClientProps {
-  userId: string;
-  userToken: string;
-}
 
 export const useStreamChatClient = ({
   userId,
@@ -19,6 +15,9 @@ export const useStreamChatClient = ({
     useState<StreamChat<DefaultStreamChatGenerics>>();
 
   useEffect(() => {
+    if (!userId || !userToken) {
+      return;
+    }
     const initializeChat = async () => {
       const client = new StreamChat(apiKey);
       await client.connectUser({ id: userId }, userToken);
@@ -27,7 +26,7 @@ export const useStreamChatClient = ({
     };
 
     initializeChat();
-  }, []);
+  }, [userId, userToken]);
   return {
     chatClient,
   };

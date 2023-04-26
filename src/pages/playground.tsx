@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import AppFirebase from "@/lib/firebase";
+import AppStreamChat from "@/lib/stream-chat";
 
-import { StreamChat, Channel as StreamChatChannel } from "stream-chat";
 import {
   Attachment,
   Channel,
@@ -17,103 +17,57 @@ import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
 import "stream-chat-react/dist/css/v2/index.css";
 import GoogleSignOutButton from "./components/google/google-signout-button";
 import { useRouter } from "next/router";
+import {
+  UseStreamChatChannelProps,
+  UseStreamChatClientProps,
+} from "@/hooks/stream-chat/stream-chat.types";
+import { useStreamChatClient } from "@/hooks/stream-chat/use-stream-chat-client";
+import { useStreamChatChannel } from "@/hooks/stream-chat/use-stream-chat-channel";
 const apiKey = process.env.STREAMCHAT_API_KEY || "";
 
-interface UseStreamChatClientProps {
-  userId: string;
-  userToken: string;
-}
-
-const useStreamChatClient = ({
-  userId,
-  userToken,
-}: UseStreamChatClientProps) => {
-  const [chatClient, setChatClient] =
-    useState<StreamChat<DefaultStreamChatGenerics>>();
-
-  useEffect(() => {
-    const initializeChat = async () => {
-      const client = new StreamChat(apiKey);
-      await client.connectUser({ id: userId }, userToken);
-
-      setChatClient(client);
-    };
-
-    initializeChat();
-  }, []);
-  return {
-    chatClient,
-  };
-};
-
-interface UseStreamChatChannelProps {
-  channel: string;
-  channelOptions: Record<string, string | string[]>;
-  client?: StreamChat<DefaultStreamChatGenerics>;
-}
-
-const useStreamChatChannel = ({
-  channel,
-  channelOptions,
-  client,
-}: UseStreamChatChannelProps) => {
-  const [chatChannel, setChatChannel] =
-    useState<StreamChatChannel<DefaultStreamChatGenerics>>();
-
-  useEffect(() => {
-    const initializeChannel = async () => {
-      if (client) {
-        const connectedChannel = client.channel(
-          "messaging",
-          channel,
-          channelOptions
-        );
-        await connectedChannel.watch();
-        setChatChannel(connectedChannel);
-      }
-    };
-    initializeChannel();
-  }, [client]);
-
-  return { chatChannel };
-};
-
 // TODO: get this from backend
-const userId = "lester";
-const userToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyIn0.vl4k9H646Deg5-mAWQevIz1Mr7gm22sp1CPymE_u_bQ";
+// const userId = "lester2";
+// const userToken =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyMiJ9.AcZiVADB4RIK4eNDJ_nd1dE4rcjdG3Xu8fdk5sfqqVk";
 
-const Sidebar = () => {
+const Playground = () => {
   const router = useRouter();
-  const [user, setUser] = useState<AppFirebase.User | null>();
-  const channel = "new_channel";
-  const channelOptions = {
-    // add as many custom fields as you'd like
-    image: "https://www.drupal.org/files/project-images/react.png",
-    name: "Talk about React",
-    members: ["lester"],
-  };
-  const { chatClient } = useStreamChatClient({ userId, userToken });
+  const [user, setUser] = useState<UseStreamChatClientProps | null>();
+  const [channel, setChannel] = useState<UseStreamChatChannelProps | null>();
+
+  const { chatClient } = useStreamChatClient({ userId: user?.userId });
   const { chatChannel } = useStreamChatChannel({
     client: chatClient,
-    channel,
-    channelOptions,
+    channel: channel?.channel,
+    channelOptions: channel?.channelOptions,
   });
 
   useEffect(() => {
-    const unsubscribe = AppFirebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
-    });
+    if (!AppFirebase.auth().currentUser) {
+      router.push("signin");
+      return;
+    }
 
-    // cleanup function to unsubscribe from the listener
-    return unsubscribe;
+    const initializeUser = async (userId: string) => {
+      if (userId.length > 0) {
+        const tokenResponse = await AppStreamChat.getToken(userId);
+        const { token } = await tokenResponse.json();
+        setUser({
+          userId: userId,
+          userToken: token,
+        });
+      }
+    };
+
+    initializeUser(AppFirebase.auth().currentUser?.uid || "");
+
+    // console.log(AppFirebase.auth().currentUser);
+    // console.log(AppFirebase.auth().currentUser?.uid);
+    // console.log(AppFirebase.auth().currentUser?.email);
   }, []);
+
   if (!chatClient || !chatChannel) {
     return null;
-  }
-
-  if (!AppFirebase.auth().currentUser) {
-    router.push("signin");
   }
 
   return (
@@ -132,4 +86,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Playground;
