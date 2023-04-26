@@ -34,7 +34,6 @@ const channel = chatClient.channel("messaging", "custom_channel_id", {
   image: "https://www.drupal.org/files/project-images/react.png",
   name: "Talk about React",
   members: ["weathered-morning-1"],
-  attachments: false,
 });
 
 const Sidebar = () => {
