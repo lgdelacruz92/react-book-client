@@ -14,6 +14,7 @@ import {
 import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
 
 import "stream-chat-react/dist/css/v2/index.css";
+import GoogleSignOutButton from "./components/google/google-signout-button";
 const apiKey = process.env.STREAMCHAT_API_KEY || "";
 
 interface UseStreamChatClientProps {
@@ -100,6 +101,7 @@ const Sidebar = () => {
   }
   return (
     <Box id="chat-channel-container">
+      <GoogleSignOutButton />
       <Chat client={chatClient} theme="messaging">
         <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>

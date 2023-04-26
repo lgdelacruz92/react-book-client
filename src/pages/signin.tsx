@@ -1,7 +1,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import GoogleSignInButton from "./components/google/google-signin-button";
-import GoogleSignOutButton from "./components/google/google-signout-button";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -24,8 +23,7 @@ if (!firebase.apps.length) {
 const SignIn = () => {
   return (
     <div>
-      <GoogleSignInButton />
-      <GoogleSignOutButton />
+      <GoogleSignInButton redirect="playground" />
     </div>
   );
 };
