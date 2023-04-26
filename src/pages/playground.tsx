@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { StreamChat } from "stream-chat";
+import { StreamChat, Channel as StreamChatChannel } from "stream-chat";
 import {
   Attachment,
   Channel,
@@ -14,33 +14,64 @@ import {
 import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
 
 import "stream-chat-react/dist/css/v2/index.css";
-
-const chatClient = new StreamChat("nf84egcdpf3m");
-const userToken =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoid2VhdGhlcmVkLW1vcm5pbmctMSJ9.yeOriF7jOZlrPpFpF5S1zZUg7GiEVwbU5vCRxq5ql_k";
-
-chatClient.connectUser(
-  {
-    id: "weathered-morning-1",
-    name: "weathered-morning-1",
-    image:
-      "https://getstream.io/random_png/?id=weathered-morning-1&name=weathered-morning-1",
-  },
-  userToken
-);
-
-const channel = chatClient.channel("messaging", "custom_channel_id", {
-  // add as many custom fields as you'd like
-  image: "https://www.drupal.org/files/project-images/react.png",
-  name: "Talk about React",
-  members: ["weathered-morning-1"],
-});
+const apiKey = process.env.STREAMCHAT_API_KEY || "";
 
 const Sidebar = () => {
+  const [chatClient, setChatClient] =
+    useState<StreamChat<DefaultStreamChatGenerics>>();
+  const [chatChannel, setChatChannel] =
+    useState<StreamChatChannel<DefaultStreamChatGenerics>>();
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    const initializeChat = async () => {
+      const userId = "lester";
+      const userToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibGVzdGVyIn0.vl4k9H646Deg5-mAWQevIz1Mr7gm22sp1CPymE_u_bQ";
+
+      const client = new StreamChat(apiKey);
+      await client.connectUser({ id: userId }, userToken);
+
+      setChatClient(client);
+    };
+
+    initializeChat();
+  }, []);
+
+  useEffect(() => {
+    const initializeChannel = async () => {
+      if (chatClient) {
+        const channel = chatClient.channel("messaging", "new_channel", {
+          // add as many custom fields as you'd like
+          image: "https://www.drupal.org/files/project-images/react.png",
+          name: "Talk about React",
+          members: ["lester"],
+        });
+        await channel.watch();
+        setChatChannel(channel);
+      }
+    };
+    initializeChannel();
+  }, [chatClient]);
+
+  useEffect(() => {
+    if (chatChannel && chatContainerRef.current) {
+      const attachInput = (chatContainerRef.current as any).querySelector(
+        ".str-chat__file-input-container"
+      );
+      if (attachInput) {
+        attachInput.disabled = true;
+      }
+    }
+  }, [chatChannel, chatContainerRef.current]);
+
+  if (!chatClient || !chatChannel) {
+    return null;
+  }
   return (
-    <Box>
+    <Box ref={chatContainerRef} id="chat-channel-container">
       <Chat client={chatClient} theme="messaging light">
-        <Channel channel={channel} Attachment={Attachment}>
+        <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>
             <ChannelHeader />
             <MessageList />
