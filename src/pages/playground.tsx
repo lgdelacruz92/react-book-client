@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import AppFirebase from "@/lib/firebase";
 import AppStreamChat from "@/lib/stream-chat";
@@ -58,6 +58,15 @@ const Playground = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const eventListener = chatChannel?.on("message.new", (event) => {
+      console.log("event name", chatChannel.state.messages);
+    });
+    return () => {
+      eventListener?.unsubscribe();
+    };
+  }, [chatChannel]);
+
   if (!chatClient || !chatChannel) {
     return null;
   }
@@ -65,6 +74,15 @@ const Playground = () => {
   return (
     <Box id="chat-channel-container">
       <GoogleSignOutButton />
+      <Button
+        onClick={() => {
+          if (chatChannel) {
+            chatChannel.sendMessage({ text: "new message" });
+          }
+        }}
+      >
+        append a message
+      </Button>
       <Chat client={chatClient} theme="messaging">
         <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>
