@@ -4,6 +4,10 @@ import { DefaultStreamChatGenerics } from "stream-chat-react/dist/types/types";
 export interface UseStreamChatClientProps {
   userId?: string;
   userToken?: string;
+  userInfo?: {
+    userId: string;
+    channelId: string;
+  };
 }
 
 export interface UseStreamChatChannelProps {
