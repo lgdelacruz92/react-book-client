@@ -29,6 +29,7 @@
     "highlight.js": "^11.7.0",
     "markdown-it": "^13.0.1",
     "next": "13.3.0",
+    "ngrok": "^4.3.3",
     "postcss": "8.4.22",
     "prosemirror": "^0.11.1",
     "prosemirror-example-setup": "^1.2.1",
