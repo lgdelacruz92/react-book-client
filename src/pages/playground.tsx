@@ -79,15 +79,6 @@ const Playground = () => {
   return (
     <Box id="chat-channel-container">
       <GoogleSignOutButton />
-      <Button
-        onClick={() => {
-          if (chatChannel) {
-            chatChannel.sendMessage({ text: "new message" });
-          }
-        }}
-      >
-        append a message
-      </Button>
       <Chat client={chatClient} theme="messaging">
         <Channel channel={chatChannel} Attachment={Attachment}>
           <Window>
