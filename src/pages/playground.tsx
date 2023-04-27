@@ -58,15 +58,6 @@ const Playground = () => {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    const eventListener = chatChannel?.on("message.new", (event) => {
-      console.log("event name", chatChannel.state.messages);
-    });
-    return () => {
-      eventListener?.unsubscribe();
-    };
-  }, [chatChannel]);
-
   if (!chatClient || !chatChannel) {
     return null;
   }
