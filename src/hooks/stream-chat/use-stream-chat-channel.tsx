@@ -27,19 +27,6 @@ export const useStreamChatChannel = ({
         await connectedChannel.watch();
         setChatChannel(connectedChannel);
       }
-
-      if (channel) {
-        const startTutoring = async () => {
-          await fetch(`${process.env.API_URL}/start-tutoring`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ channel_id: channel }),
-          });
-        };
-        startTutoring();
-      }
     };
     initializeChannel();
 
