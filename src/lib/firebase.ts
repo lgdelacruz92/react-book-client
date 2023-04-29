@@ -15,7 +15,6 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
   if (typeof window !== "undefined") {
-    console.log("setting persistence");
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
