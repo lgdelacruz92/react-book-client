@@ -8,6 +8,7 @@ export class ChatUser {
   }
 
   async connect(token: string): Promise<void> {
+    await ChatInstance.disconnectUser();
     await ChatInstance.connectUser(
       {
         id: this.userId,
