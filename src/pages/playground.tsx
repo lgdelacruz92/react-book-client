@@ -80,7 +80,7 @@ const Playground = () => {
     <Box id="chat-channel-container">
       <GoogleSignOutButton />
       <Chat client={chatClient} theme="messaging">
-        <Channel channel={chatChannel} Attachment={Attachment}>
+        <Channel channel={chatChannel}>
           <Window>
             <ChannelHeader />
             <MessageList />

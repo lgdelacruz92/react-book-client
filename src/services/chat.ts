@@ -1,4 +1,5 @@
 import ChatInstance from "@/lib/stream-chat";
+import { Channel } from "stream-chat";
 
 export class ChatUser {
   userId: string;
@@ -16,16 +17,12 @@ export class ChatUser {
   }
 }
 
-export class ChatChannel {
-  channelId: string;
-  constructor(channelId: string) {
-    this.channelId = channelId;
-  }
+export type ChatChannel = Channel;
 
-  async create(userIds: string[]) {
-    const channel = ChatInstance.channel("messaging", this.channelId, {
-      members: [...userIds],
-    });
-    await channel.create();
-  }
-}
+export const createChannel = async (channelId: string, userIds: string[]) => {
+  const channel = ChatInstance.channel("messaging", channelId, {
+    members: [...userIds],
+  });
+  await channel.create();
+  return channel;
+};
