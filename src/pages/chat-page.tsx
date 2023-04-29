@@ -10,7 +10,7 @@ import {
   Window,
 } from "stream-chat-react";
 import GoogleSignOutButton from "./components/google/google-signout-button";
-import { createUser, getUser } from "./api/user/user";
+import { UserResponseType, createUser, getUser } from "./api/user/user";
 import { createToken } from "./api/chat/chat";
 import { ChatChannel, ChatUser, createChannel } from "@/services/chat";
 import ChatInstance from "@/lib/stream-chat";
@@ -34,24 +34,32 @@ const ChatPage: React.FC<ChatProps> = () => {
       const initializeChat = async () => {
         const currentUser = await getUser(user.uid);
         let channelId: string;
-        if (!currentUser) {
+        let userResult: UserResponseType;
+
+        // Means no user found
+        if (Object.keys(currentUser).length === 0) {
           // This means user has never connected
           // 1. create user
-          const userResult = await createUser(user.uid);
+          userResult = await createUser(user.uid);
           channelId = userResult.channelId;
+        } else {
+          userResult = currentUser;
         }
 
         // 2. create chat token
-        const { token } = await createToken(user.uid);
+        const { token } = await createToken(userResult.userId);
 
         // 3. create chat user
-        const chatUser = new ChatUser(user.uid);
+        const chatUser = new ChatUser(userResult.userId);
         await chatUser.connect(token);
 
-        channelId = currentUser.channelId;
+        channelId = userResult.channelId;
 
         // 4. create channel
-        const channel = await createChannel(channelId, [user.uid, "assistant"]);
+        const channel = await createChannel(channelId, [
+          userResult.userId,
+          "assistant",
+        ]);
         setChatChannel(channel);
       };
       initializeChat();

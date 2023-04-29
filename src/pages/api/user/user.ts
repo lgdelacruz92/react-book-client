@@ -9,6 +9,7 @@ export const getUser = async (userId: string): Promise<UserResponseType> => {
 export interface UserResponseType {
   userId: string;
   channelId: string;
+  authUserId: string;
 }
 
 export const createUser = async (userId: string): Promise<UserResponseType> => {

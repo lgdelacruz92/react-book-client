@@ -4,7 +4,6 @@ import AppFirebase from "@/lib/firebase";
 import AppStreamChat from "@/lib/stream-chat";
 
 import {
-  Attachment,
   Channel,
   ChannelHeader,
   Chat,
