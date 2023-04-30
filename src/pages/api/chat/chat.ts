@@ -1,4 +1,3 @@
-import { apiURL } from "../apIURL";
 import { post } from "../post";
 
 export const createToken = async (userId: string) => {

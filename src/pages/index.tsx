@@ -1,19 +1,13 @@
-import { Stack } from "@chakra-ui/react";
-import Book from "./components/book";
-import BookGallery from "./components/book-gallery";
-import BookLogo from "./components/book-logo";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function IndexPage() {
-  return (
-    <Stack m="1rem">
-      <BookGallery>
-        <Book
-          label="Introduction To React"
-          icon={<BookLogo src="/favicon.ico"></BookLogo>}
-        ></Book>
-      </BookGallery>
-    </Stack>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/signin");
+  }, [router]);
+  return null;
 }
 
 export default IndexPage;
