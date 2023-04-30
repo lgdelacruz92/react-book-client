@@ -1,5 +1,5 @@
 import { Center } from "@chakra-ui/react";
-import GoogleSignInButton from "./components/google/google-signin-button";
+import GoogleSignInButton from "../lib/components/google/google-signin-button";
 
 const SignIn = () => {
   return (

@@ -9,9 +9,9 @@ import {
   MessageList,
   Window,
 } from "stream-chat-react";
-import GoogleSignOutButton from "./components/google/google-signout-button";
-import { UserResponseType, createUser, getUser } from "./api/user/user";
-import { createToken } from "./api/chat/chat";
+import GoogleSignOutButton from "../lib/components/google/google-signout-button";
+import { UserResponseType, createUser, getUser } from "../lib/api/user/user";
+import { createToken } from "../lib/api/chat/chat";
 import { ChatChannel, ChatUser, createChannel } from "@/services/chat";
 import ChatInstance from "@/lib/stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
