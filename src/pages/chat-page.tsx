@@ -34,6 +34,7 @@ const ChatPage: React.FC<ChatProps> = () => {
     if (user) {
       const initializeChat = async () => {
         const currentUser = await getUser(user.uid);
+        console.log(currentUser);
         let channelId: string;
         let userResult: UserResponseType;
 
@@ -46,7 +47,6 @@ const ChatPage: React.FC<ChatProps> = () => {
         } else {
           userResult = currentUser;
         }
-
         // 2. create chat token
         const { token } = await createToken(userResult.userId);
 
@@ -65,6 +65,13 @@ const ChatPage: React.FC<ChatProps> = () => {
       };
       initializeChat();
     }
+
+    return () => {
+      const disconnectUser = async () => {
+        await ChatInstance.disconnectUser();
+      };
+      disconnectUser();
+    };
   }, [user]);
   return (
     <div>
