@@ -19,5 +19,4 @@ const nextConfig = {
     return config
   },
 }
-console.log(nextConfig);
 module.exports = nextConfig
