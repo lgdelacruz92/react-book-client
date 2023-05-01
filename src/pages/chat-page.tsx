@@ -15,7 +15,7 @@ import { createToken } from "../lib/api/chat/chat";
 import { ChatChannel, ChatUser, createChannel } from "@/services/chat";
 import ChatInstance from "@/lib/stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
-import { Center } from "@chakra-ui/react";
+import { Center, Spinner } from "@chakra-ui/react";
 
 interface ChatProps {}
 
@@ -87,8 +87,8 @@ const ChatPage: React.FC<ChatProps> = () => {
           </Channel>
         </Chat>
       ) : (
-        <Center>
-          <div>User is logged out</div>
+        <Center h="100vh">
+          <Spinner size="xl" color="blue.500" />
         </Center>
       )}
     </div>
