@@ -6,6 +6,10 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "site": "stem-ai"
+    "site": "stem-ai",
+    "rewrites": [{
+      "source": "/signin",
+      "destination": "/signin"
+    }]
   }
 }
