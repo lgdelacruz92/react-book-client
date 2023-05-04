@@ -12,7 +12,7 @@ import {
 import GoogleSignOutButton from "../lib/components/google/google-signout-button";
 import { UserResponseType, createUser, getUser } from "../lib/api/user/user";
 import { createToken } from "../lib/api/chat/chat";
-import { ChatChannel, ChatUser, createChannel } from "@/services/chat";
+import { ChatChannel, ChatUser, createChannel } from "@/services/chat.service";
 import ChatInstance from "@/lib/stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
 import { Center, Spinner } from "@chakra-ui/react";
