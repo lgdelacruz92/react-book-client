@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AppFirebase from "@/lib/firebase";
+import AppFirebase, { getSessionKey } from "@/lib/firebase";
 
 import {
   Channel,
@@ -27,6 +27,10 @@ const ChatPage: React.FC<ChatProps> = () => {
     const unsubscribe = AppFirebase.auth().onAuthStateChanged((user) => {
       setUser(user);
     });
+
+    console.log(
+      JSON.parse(window.sessionStorage.getItem(getSessionKey()) || "")
+    );
     return unsubscribe;
   }, []);
 

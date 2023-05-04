@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { GoogleSignInButtonProps } from "./google.types";
 import { useRouter } from "next/router";
 import AppFirebase from "@/lib/firebase";
@@ -15,7 +15,8 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
     provider.addScope("profile");
     provider.addScope("email");
     try {
-      await signInWithPopup(auth, provider);
+      const userAuth = await signInWithPopup(auth, provider);
+      // send token to backend then what?
       router.push(redirect);
     } catch (error) {
       console.error(error);

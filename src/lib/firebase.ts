@@ -18,8 +18,14 @@ if (!firebase.apps.length) {
     firebase
       .auth()
       .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-      .then(() => console.log("successfully saving persistence"));
+      .then(() => {
+        console.log("successfully saving persistence");
+      });
   }
 }
+
+export const getSessionKey = () => {
+  return `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`;
+};
 
 export default firebase;
