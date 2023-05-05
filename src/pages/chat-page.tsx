@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AppFirebase, { getSessionKey } from "@/lib/firebase";
+import AppFirebase, { Persistence, getSessionKey } from "@/lib/firebase";
 
 import {
   Channel,
@@ -17,28 +17,19 @@ import ChatInstance from "@/lib/stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
 import { Center, Spinner } from "@chakra-ui/react";
 
-interface ChatProps {}
+interface ChatProps {
+  session: {
+    uid: string;
+  };
+}
 
-const ChatPage: React.FC<ChatProps> = () => {
-  const [user, setUser] = useState<AppFirebase.User | null>(null);
+const ChatPage: React.FC<ChatProps> = ({ session }) => {
   const [channel, setChatChannel] = useState<ChatChannel | null>(null);
 
   useEffect(() => {
-    const unsubscribe = AppFirebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
-    });
-
-    console.log(
-      JSON.parse(window.sessionStorage.getItem(getSessionKey()) || "")
-    );
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    if (user) {
+    if (session) {
       const initializeChat = async () => {
-        const currentUser = await getUser(user.uid);
-        console.log(currentUser);
+        const currentUser = await getUser(session.uid);
         let channelId: string;
         let userResult: UserResponseType;
 
@@ -46,7 +37,7 @@ const ChatPage: React.FC<ChatProps> = () => {
         if (Object.keys(currentUser).length === 0) {
           // This means user has never connected
           // 1. create user
-          userResult = await createUser(user.uid);
+          userResult = await createUser(session.uid);
           channelId = userResult.channelId;
         } else {
           userResult = currentUser;
@@ -76,11 +67,11 @@ const ChatPage: React.FC<ChatProps> = () => {
       };
       disconnectUser();
     };
-  }, [user]);
+  }, [session]);
   return (
     <div>
       <GoogleSignOutButton />
-      {user && channel ? (
+      {session && channel ? (
         <Chat client={ChatInstance} theme="messaging">
           <Channel channel={channel}>
             <Window>
