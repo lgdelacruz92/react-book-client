@@ -1,9 +1,12 @@
+import { getSession } from "@/services/session.service";
 import {
+  createStripeCustomer,
   getCheckoutSession,
   redirectToCheckout,
 } from "@/services/stripe.service";
+import { getUser } from "@/services/user.service";
 import { Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Stripe } from "stripe";
 
 interface CheckoutPageProps {}
@@ -36,6 +39,23 @@ const CheckoutPage: React.FC<CheckoutPageProps> = () => {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    const { uid } = getSession();
+    if (uid) {
+      const initializeCheckout = async (userId: string) => {
+        const response = await getUser(userId);
+        const user = await response.json();
+        if (!user.customerId) {
+          // create as stripe customer here
+
+          console.log("create stripe customer");
+        }
+      };
+
+      initializeCheckout(uid);
+    }
+  }, []);
 
   return (
     <div>

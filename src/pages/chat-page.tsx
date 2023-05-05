@@ -28,7 +28,6 @@ const ChatPage: React.FC<ChatProps> = () => {
     if (uid) {
       const initializeChat = async () => {
         const currentUser = await getUser(uid);
-        console.log({ currentUser });
         let channelId: string;
         let userResult: UserResponseType;
 
