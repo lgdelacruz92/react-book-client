@@ -16,20 +16,19 @@ import { ChatChannel, ChatUser, createChannel } from "@/services/chat.service";
 import ChatInstance from "@/lib/stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
 import { Center, Spinner } from "@chakra-ui/react";
+import { getSession } from "@/services/session.service";
 
-interface ChatProps {
-  session: {
-    uid: string;
-  };
-}
+interface ChatProps {}
 
-const ChatPage: React.FC<ChatProps> = ({ session }) => {
+const ChatPage: React.FC<ChatProps> = () => {
   const [channel, setChatChannel] = useState<ChatChannel | null>(null);
 
   useEffect(() => {
-    if (session) {
+    const { uid } = getSession();
+    if (uid) {
       const initializeChat = async () => {
-        const currentUser = await getUser(session.uid);
+        const currentUser = await getUser(uid);
+        console.log({ currentUser });
         let channelId: string;
         let userResult: UserResponseType;
 
@@ -37,7 +36,7 @@ const ChatPage: React.FC<ChatProps> = ({ session }) => {
         if (Object.keys(currentUser).length === 0) {
           // This means user has never connected
           // 1. create user
-          userResult = await createUser(session.uid);
+          userResult = await createUser(uid);
           channelId = userResult.channelId;
         } else {
           userResult = currentUser;
@@ -67,11 +66,11 @@ const ChatPage: React.FC<ChatProps> = ({ session }) => {
       };
       disconnectUser();
     };
-  }, [session]);
+  }, []);
   return (
     <div>
       <GoogleSignOutButton />
-      {session && channel ? (
+      {channel ? (
         <Chat client={ChatInstance} theme="messaging">
           <Channel channel={channel}>
             <Window>

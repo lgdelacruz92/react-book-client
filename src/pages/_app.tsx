@@ -7,23 +7,22 @@ import { Analytics } from "@vercel/analytics/react";
 import { useEffect, useState } from "react";
 import { getSessionKey } from "@/lib/firebase";
 import { useRouter } from "next/router";
+import { getUser } from "@/services/user.service";
+import { getSession } from "@/services/session.service";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [session, setSession] = useState<null | { uid: string }>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (window.sessionStorage.getItem(getSessionKey())) {
-      setSession(
-        JSON.parse(window.sessionStorage.getItem(getSessionKey()) || "")
-      );
-    } else {
+    const { uid } = getSession();
+    if (!uid) {
       router.push("/signin");
     }
   }, []);
+
   return (
     <ChakraProvider>
-      <Component {...pageProps} session={session} />
+      <Component {...pageProps} />
       <Analytics />
     </ChakraProvider>
   );
