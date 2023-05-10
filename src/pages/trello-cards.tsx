@@ -45,7 +45,6 @@ interface TrelloCardsProps {
 }
 
 const TrelloCards: NextPage<TrelloCardsProps> = ({ cards }) => {
-  console.log(cards);
   return (
     <Center p="5">
       <Stack w="70vw">
