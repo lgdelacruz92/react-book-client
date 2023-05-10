@@ -19,6 +19,27 @@ import {
   ReactPortal,
 } from "react";
 
+type Card = {
+  name:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | ReactFragment
+    | ReactPortal
+    | null
+    | undefined;
+  desc:
+    | string
+    | number
+    | boolean
+    | ReactElement<any, string | JSXElementConstructor<any>>
+    | ReactFragment
+    | ReactPortal
+    | null
+    | undefined;
+};
+
 interface TrelloCardsProps {
   cards: any;
 }
@@ -30,40 +51,19 @@ const TrelloCards: NextPage<TrelloCardsProps> = ({ cards }) => {
       <Stack w="70vw">
         <Heading>Trello Cards</Heading>
         <Accordion allowMultiple border="1px solid lightgrey" borderRadius="md">
-          {cards.map(
-            (card: {
-              name:
-                | string
-                | number
-                | boolean
-                | ReactElement<any, string | JSXElementConstructor<any>>
-                | ReactFragment
-                | ReactPortal
-                | null
-                | undefined;
-              desc:
-                | string
-                | number
-                | boolean
-                | ReactElement<any, string | JSXElementConstructor<any>>
-                | ReactFragment
-                | ReactPortal
-                | null
-                | undefined;
-            }) => (
-              <AccordionItem>
-                <Heading>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      {card.name}
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </Heading>
-                <AccordionPanel pb={4}>{card.desc}</AccordionPanel>
-              </AccordionItem>
-            )
-          )}
+          {cards.map((card: Card) => (
+            <AccordionItem>
+              <Heading>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    {card.name}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </Heading>
+              <AccordionPanel pb={4}>{card.desc}</AccordionPanel>
+            </AccordionItem>
+          ))}
         </Accordion>
       </Stack>
     </Center>
