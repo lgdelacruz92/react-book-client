@@ -7,6 +7,9 @@ import { Analytics } from "@vercel/analytics/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getSession } from "@/services/session.service";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -19,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-      <Analytics />
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <Component {...pageProps} />
+        <Analytics />
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 }
