@@ -64,7 +64,7 @@ const TrelloCards: NextPage<TrelloCardsProps> = ({ cards }) => {
 };
 
 TrelloCards.getInitialProps = async () => {
-  const url = `${apiURL(`/trello/boards/607322ed85f4404e86476b3e/cards`)}`;
+  const url = `${apiURL(`/trello/boards/645bdf89f7dade78f6776005/cards`)}`;
   const response = await axios.get(url);
   const cards = response.data;
   return { cards };
@@ -92,7 +92,20 @@ const AccordionRow: React.FC<{ card: Card }> = ({ card }) => {
             {
               role: "user",
               content:
-                "Score the following task based on business value, development cost, and  customer value",
+                "Score the following task based on business value, development cost, and  customer value.",
+            },
+            {
+              role: "user",
+              content: "include explanations why",
+            },
+            {
+              role: "user",
+              content: "Scores are between 1 to 10",
+            },
+            {
+              role: "user",
+              content:
+                "Give an overall score at the end in the form of `Overall: actual/max`",
             },
             {
               role: "user",

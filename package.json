@@ -69,6 +69,7 @@
     "webpack": "^5.81.0"
   },
   "devDependencies": {
-    "@types/he": "^1.2.0"
+    "@types/he": "^1.2.0",
+    "cheerio": "^1.0.0-rc.12"
   }
 }
