@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Button,
   Center,
   Heading,
   Stack,
@@ -21,6 +22,7 @@ import {
   useEffect,
 } from "react";
 import { useQuery } from "react-query";
+import Link from "next/link";
 
 type Card = {
   id: string;
@@ -50,16 +52,28 @@ interface TrelloCardsProps {
 
 const TrelloCards: NextPage<TrelloCardsProps> = ({ cards }) => {
   return (
-    <Center p="5">
-      <Stack w="70vw">
-        <Heading>Trello Cards</Heading>
-        <Accordion allowMultiple border="1px solid lightgrey" borderRadius="md">
-          {cards.map((card: Card, index: number) => (
-            <AccordionRow card={card} key={`accordion-row-index`} />
-          ))}
-        </Accordion>
-      </Stack>
-    </Center>
+    <>
+      <Center p="5">
+        <Button
+          as={Link}
+          href={`https://trello.com/1/authorize?expiration=1day&name=MyPersonalToken&scope=read&response_type=token&return_url=http://localhost:3000/checkout-page&key=73c897bdee6f62d6503b4e8a64e87163`}
+        >
+          Allow Trello
+        </Button>
+        <Stack w="70vw">
+          <Heading>Trello Cards</Heading>
+          <Accordion
+            allowMultiple
+            border="1px solid lightgrey"
+            borderRadius="md"
+          >
+            {cards.map((card: Card, index: number) => (
+              <AccordionRow card={card} key={`accordion-row-${index}`} />
+            ))}
+          </Accordion>
+        </Stack>
+      </Center>
+    </>
   );
 };
 
@@ -134,7 +148,6 @@ const AccordionRow: React.FC<{ card: Card }> = ({ card }) => {
   if (error) {
     return <div>Error</div>;
   }
-  console.log(data);
   return (
     <AccordionItem>
       <Heading>
